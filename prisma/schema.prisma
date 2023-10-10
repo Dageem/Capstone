@@ -7,17 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
   password String
-  posts    post[]
-  admin    Boolean @default(false)
+  recipes  Recipe[]
+  admin    String
+  Post     Post[]
 }
 
-model post {
-  id       Int    @id @default(autoincrement())
-  author   user   @relation(fields: [authorId], references: [id])
-  authorId Int // relation scalar field  (used in the `@relation` attribute above)
-  text     String
+model Recipe {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  details           String
+  desc              String
+  instructions      String
+  imageUrl          String? //Image URL
+  image2Url         String? //Second Image URL
+  image3Url         String? //Third Image URL
+  tagId             Int
+  tag               Tag                 @relation(fields: [tagId], references: [id])
+  User              User?               @relation(fields: [userId], references: [id])
+  userId            Int?
+  ingredientId      Int
+  ingredients       Ingredient          @relation(fields: [ingredientId], references: [id])
+  Ingredient_recipe Ingredient_recipe[]
+}
+
+model Tag {
+  id      Int      @id @default(autoincrement())
+  name    String
+  recipes Recipe[]
+}
+
+model Post {
+  id      Int    @id @default(autoincrement())
+  title   String
+  content String
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model Ingredient {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  ingredient_recipe Ingredient_recipe[]
+  Recipe            Recipe[]
+}
+
+model Ingredient_recipe {
+  id           Int        @id @default(autoincrement())
+  ingredientId Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  recipeId     Int
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  measurement  String
 }
