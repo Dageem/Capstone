@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "clear && concurrently 'npm run less' 'npm run server'",
+    "start": "NODE_ENV=production node src/server/main.js",
     "build": "vite build",
     "preview": "vite preview",
     "server": "nodemon --watch server -e js,html server/index.js",
