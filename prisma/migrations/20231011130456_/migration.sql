@@ -64,6 +64,12 @@ CREATE TABLE "Ingredient_recipe" (
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Ingredient_name_key" ON "Ingredient"("name");
+
 -- AddForeignKey
 ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
