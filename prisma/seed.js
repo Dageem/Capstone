@@ -67,9 +67,17 @@ async function seed() {
         "https://img.taste.com.au/Fa2mth9d/taste/2016/11/beef-quesadillas-with-avocado-smash-69253-1.jpeg",
       image3Url:
         "https://mommygonehealthy.com/wp-content/uploads/2018/09/IMG_9033.jpg",
-      tagId: easyTag.id,
-      ingredientId: beefIngredient.id,
     },
+  });
+
+  // Associating Recipe with Tags using the Recipetags join table
+  await prisma.recipetags.createMany({
+    data: [
+      { tagId: easyTag.id, recipeId: recipe.id },
+      { tagId: mexicanTag.id, recipeId: recipe.id },
+      { tagId: southAmericaTag.id, recipeId: recipe.id },
+      { tagId: beefTag.id, recipeId: recipe.id }
+    ],
   });
 
   // Associating Ingredients with Recipe and their measurements
@@ -107,3 +115,4 @@ seed()
   .finally(async () => {
     await prisma.$disconnect();
   });
+

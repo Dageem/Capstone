@@ -18,11 +18,19 @@ CREATE TABLE "Recipe" (
     "imageUrl" TEXT,
     "image2Url" TEXT,
     "image3Url" TEXT,
-    "tagId" INTEGER NOT NULL,
     "userId" INTEGER,
-    "ingredientId" INTEGER NOT NULL,
+    "tagId" INTEGER,
 
     CONSTRAINT "Recipe_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Recipetags" (
+    "id" SERIAL NOT NULL,
+    "tagId" INTEGER NOT NULL,
+    "recipeId" INTEGER NOT NULL,
+
+    CONSTRAINT "Recipetags_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -71,13 +79,16 @@ CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 CREATE UNIQUE INDEX "Ingredient_name_key" ON "Ingredient"("name");
 
 -- AddForeignKey
-ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_ingredientId_fkey" FOREIGN KEY ("ingredientId") REFERENCES "Ingredient"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Recipe" ADD CONSTRAINT "Recipe_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Recipetags" ADD CONSTRAINT "Recipetags_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Recipetags" ADD CONSTRAINT "Recipetags_recipeId_fkey" FOREIGN KEY ("recipeId") REFERENCES "Recipe"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

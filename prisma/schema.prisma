@@ -25,19 +25,27 @@ model Recipe {
   imageUrl          String? //Image URL
   image2Url         String? //Second Image URL
   image3Url         String? //Third Image URL
-  tagId             Int
-  tag               Tag                 @relation(fields: [tagId], references: [id])
   User              User?               @relation(fields: [userId], references: [id])
   userId            Int?
-  ingredientId      Int
-  ingredients       Ingredient          @relation(fields: [ingredientId], references: [id])
   Ingredient_recipe Ingredient_recipe[]
+  recipetags        Recipetags[]
+  Tag               Tag?                @relation(fields: [tagId], references: [id])
+  tagId             Int?
+}
+
+model Recipetags {
+  id       Int    @id @default(autoincrement())
+  tagId    Int
+  tag      Tag    @relation(fields: [tagId], references: [id])
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
 }
 
 model Tag {
-  id      Int      @id @default(autoincrement())
-  name    String   @unique
-  recipes Recipe[]
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  recipes    Recipe[]
+  recipetags Recipetags[]
 }
 
 model Post {
@@ -52,7 +60,6 @@ model Ingredient {
   id                Int                 @id @default(autoincrement())
   name              String              @unique
   ingredient_recipe Ingredient_recipe[]
-  Recipe            Recipe[]
 }
 
 model Ingredient_recipe {
